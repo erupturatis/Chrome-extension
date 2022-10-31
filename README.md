@@ -1,2 +1,3 @@
 # Chrome-extension
-Just a chrome extension
+
+A chrome extension that encrypts all text on a page based on a given function
