@@ -1,6 +1,6 @@
 {
-  "manifest_version": 1,
-  "name": "testExtension",
+  "manifest_version": 3,
+  "name": "PageEncryption",
   "version": "1.0.0",
   "content_scripts": [
     {

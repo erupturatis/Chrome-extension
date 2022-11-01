@@ -24,7 +24,8 @@ for (element of originalHTML) {
   }
 
   if (shouldChange && !specialChar && isLetter(element)) {
-    modifiedHTML = modifiedHTML + "s";
+    // text character that should be encrypted
+    modifiedHTML = modifiedHTML + encode(element);
   } else {
     modifiedHTML = modifiedHTML + element;
   }
@@ -35,4 +36,10 @@ for (element of originalHTML) {
 
 document.body.innerHTML = modifiedHTML;
 
-// function encode()
+function encode(char) {
+  let modifiedChar = char;
+  let code = modifiedChar.charCodeAt(0);
+  modifiedChar = String.fromCharCode(code + 1);
+  //modifiedChar = "a";
+  return modifiedChar;
+}
