@@ -1,7 +1,3 @@
-// exports.Toggle = ChangeToggle;
-
-console.log('ran extension');
-
 function EncryptPage() {
   chrome.tabs.query(
     {
@@ -15,7 +11,8 @@ function EncryptPage() {
 function gotTab(tabs) {
   console.log('in got tab');
   let msg = 'it works';
-  chrome.tabs.sendMessage(tabs[0].id, { action: 1 });
+  let decalation = document.getElementById('kinput').value;
+  chrome.tabs.sendMessage(tabs[0].id, { action: 1, decalation });
 }
 
 chrome.runtime.onMessage.addListener(function (
@@ -25,9 +22,7 @@ chrome.runtime.onMessage.addListener(function (
 ) {
   console.log(request);
 });
-// function Toggle() {
-//   Toggleing();
-// }
+
 document
   .getElementById('Switchy')
   .addEventListener('click', EncryptPage);

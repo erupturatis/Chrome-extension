@@ -1,4 +1,5 @@
 let toggle = false;
+let k = 1;
 
 chrome.runtime.onMessage.addListener(function (
   request,
@@ -6,7 +7,7 @@ chrome.runtime.onMessage.addListener(function (
   sendResponse
 ) {
   if (request.action === 1) {
-    ReplaceText();
+    ReplaceText(request.decalation);
   } else {
     console.log(request);
   }
@@ -116,8 +117,8 @@ function encode(Text) {
   for (let char of Text) {
     let modifiedChar = char;
     let code = modifiedChar.charCodeAt(0);
-    modifiedChar = String.fromCharCode(code + 1);
-    if (isLetter(char)) {
+    modifiedChar = String.fromCharCode(code + k);
+    if (char >= 'A') {
       newText = newText + modifiedChar;
     } else {
       newText = newText + char;
@@ -126,16 +127,12 @@ function encode(Text) {
   return newText;
 }
 
-function ReplaceText() {
-  replaceOnDocument(encode);
-}
+function ReplaceText(decalation) {
+  k = parseInt(decalation);
+  console.log(k);
+  console.log(typeof k);
 
-function ChangeToggle() {
-  toggle = !toggle;
-  if (toggle) {
-    ReplaceText();
-  }
-  console.log('working toggle');
+  replaceOnDocument(encode);
 }
 
 if (toggle) {
