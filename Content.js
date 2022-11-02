@@ -1,15 +1,17 @@
-console.log('Here in content');
+let toggle = false;
 
 chrome.runtime.onMessage.addListener(function (
   request,
   sender,
   sendResponse
 ) {
-  console.log(
-    sender.tab
-      ? 'from a content script:' + sender.tab.url
-      : 'from the extension'
-  );
+  if (request.action === 1) {
+    ReplaceText();
+  } else {
+    console.log(request);
+  }
+  //ChangeToggle();
+  //chrome.runtime.sendMessage({ toggle });
 });
 
 function changeDOM() {
@@ -114,7 +116,7 @@ function encode(Text) {
   for (let char of Text) {
     let modifiedChar = char;
     let code = modifiedChar.charCodeAt(0);
-    modifiedChar = String.fromCharCode(code);
+    modifiedChar = String.fromCharCode(code + 1);
     if (isLetter(char)) {
       newText = newText + modifiedChar;
     } else {
@@ -124,17 +126,10 @@ function encode(Text) {
   return newText;
 }
 
-window.onload = function () {
-  replaceOnDocument(encode);
-};
-window.onhashchange = function () {
-  replaceOnDocument(encode);
-};
-
 function ReplaceText() {
   replaceOnDocument(encode);
 }
-let toggle = true;
+
 function ChangeToggle() {
   toggle = !toggle;
   if (toggle) {
@@ -144,7 +139,9 @@ function ChangeToggle() {
 }
 
 if (toggle) {
-  ReplaceText();
+  window.onload = function () {
+    ReplaceText();
+  };
 }
 
 // exports.Toggle = ChangeToggle;
