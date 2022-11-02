@@ -1,3 +1,17 @@
+console.log('Here in content');
+
+chrome.runtime.onMessage.addListener(function (
+  request,
+  sender,
+  sendResponse
+) {
+  console.log(
+    sender.tab
+      ? 'from a content script:' + sender.tab.url
+      : 'from the extension'
+  );
+});
+
 function changeDOM() {
   // THIS IS THE SUPID SOLUTION, BETTER IGNORE
   let originalHTML = document.body.innerHTML;
@@ -97,10 +111,10 @@ const replaceOnDocument = (
 
 function encode(Text) {
   let newText = '';
-  for (char of Text) {
+  for (let char of Text) {
     let modifiedChar = char;
     let code = modifiedChar.charCodeAt(0);
-    modifiedChar = String.fromCharCode(code + 1);
+    modifiedChar = String.fromCharCode(code);
     if (isLetter(char)) {
       newText = newText + modifiedChar;
     } else {
@@ -110,4 +124,27 @@ function encode(Text) {
   return newText;
 }
 
-window.onload = replaceOnDocument(encode);
+window.onload = function () {
+  replaceOnDocument(encode);
+};
+window.onhashchange = function () {
+  replaceOnDocument(encode);
+};
+
+function ReplaceText() {
+  replaceOnDocument(encode);
+}
+let toggle = true;
+function ChangeToggle() {
+  toggle = !toggle;
+  if (toggle) {
+    ReplaceText();
+  }
+  console.log('working toggle');
+}
+
+if (toggle) {
+  ReplaceText();
+}
+
+// exports.Toggle = ChangeToggle;
